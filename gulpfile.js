@@ -1,4 +1,4 @@
-var gulp = require('gulp');
+var gulp = require('gulp')
 var gulp_jspm = require('gulp-jspm');
 var sourcemaps = require('gulp-sourcemaps');
 var ts = require('gulp-typescript');
