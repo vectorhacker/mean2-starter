@@ -16,17 +16,17 @@ app.use(logger('combined'))
   .use(session({
     secret: 'keyboard cat',
     cookie: {
-      maxAge: config.session.maxAge 
+      maxAge: config.session.maxAge
     },
     store: store,
     resave: true,
     saveUninitialized: true
   }))
-  
+
 if (process.env.DEVELOPMENT) {
   app.use(express.static(config.Public.src))
 } else {
   app.use(express.static(config.Public.build))
 }
 
-app.listen(8081);
+app.listen(8081)

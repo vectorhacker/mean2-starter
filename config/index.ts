@@ -17,6 +17,15 @@ export class rethinkdb {
 		}
 }
 
+export class server {
+	static DEVELOPMENT = {
+		port: 8081
+	}
+	static PRODUCTION = {
+		port: process.env.PORT
+	}
+}
+
 export class session {
 	static get session_options() {
 		var options = {

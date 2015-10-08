@@ -4,7 +4,12 @@
   "description": "",
   "main": "bin/server",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postinstall": "node node_modules/jspm/jspm.js install",
+    "prebuild": "/Users/vectorhacker/Projects/AMA/tu-tracking/BusTracking/node_modules/typescript/bin/tsc",
+    "build": "/Users/vectorhacker/Projects/AMA/tu-tracking/BusTracking/node_modules/gulp/bin/gulp.js",
+    "watch": "/Users/vectorhacker/Projects/AMA/tu-tracking/BusTracking/node_modules/gulp/bin/gulp.js watch.public.prod",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./bin/server.js"
   },
   "repository": {
     "type": "git",
@@ -32,10 +37,34 @@
     "gulp-inject": "^3.0.0",
     "gulp-jsmin": "^0.1.5",
     "gulp-jspm": "^0.2.4",
+    "gulp-node-inspector": "^0.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-sourcemaps": "^1.5.2",
     "gulp-typescript": "^2.9.0",
+    "jspm": "^0.16.11",
     "live-server": "^0.8.1",
     "typescript": "^1.6.2"
+  },
+  "jspm": {
+    "directories": {
+      "baseURL": "src"
+    },
+    "dependencies": {
+      "angular2": "npm:angular2@^2.0.0-alpha.37",
+      "crypto": "github:jspm/nodelibs-crypto@^0.1.0",
+      "es6-shim": "github:es-shims/es6-shim@^0.33.3",
+      "normalize.css": "github:necolas/normalize.css@^3.0.3",
+      "reflect-metadata": "npm:reflect-metadata@^0.1.2",
+      "zone.js": "npm:zone.js@^0.5.5"
+    },
+    "devDependencies": {
+      "babel-runtime": "npm:babel-runtime@^5.8.24",
+      "core-js": "npm:core-js@^1.1.4",
+      "typescript": "npm:typescript@^1.6.2"
+    },
+    "buildConfig": {
+      "transpileES6": true,
+      "minify": true
+    }
   }
 }

@@ -10,9 +10,9 @@ var imagemin = require('gulp-imagemin');
 var concatCss = require('gulp-concat-css');
 var del = require('delete');
 var path = require('path');
+var nodeInspector = require('gulp-node-inspector');
 
 var config = require('./config');
-
 
 var params = {
   port: 8181, // Set the server port. Defaults to 8080. 
@@ -24,10 +24,18 @@ var params = {
   wait: 0 // Waits for all changes, before reloading. Defaults to 0 sec. 
 };
 
-gulp.task('default', ['compile.server.typescript', 'build.public.prod'], function () {
+gulp.task('default', ['compile.server.typescript', 'build.public.prod'],
+  function () {
 
+  });
+
+gulp.task('run.server.dev', ['compile.server.typescript'], function () {
+  gulp.src([])
+    .pipe(nodeInspector({
+      debugPort: 5858,
+      webPort: 3000,
+    }));
 });
-
 
 gulp.task('compile.server.typescript', function () {
   var tsProject = ts.createProject('tsconfig.json');
@@ -38,9 +46,9 @@ gulp.task('compile.server.typescript', function () {
   return stream;
 })
 
-
 gulp.task('compile.public.typescript', function () {
-  var tsProject = ts.createProject(path.join(config.Public.src, 'tsconfig.json'));
+  var tsProject = ts.createProject(path.join(config.Public.src,
+    'tsconfig.json'));
   var tsResult = tsProject.src() // instead of gulp.src(...) 
     .pipe(ts(tsProject));
 
@@ -53,7 +61,9 @@ gulp.task('systemjs.public.prod', function () {
     .pipe(gulp.dest(path.join(config.Public.build, './js/lib')))
 });
 
-gulp.task('jspm.public.prod', ['compile.public.typescript', 'systemjs.public.prod'], function () {
+gulp.task('jspm.public.prod', ['compile.public.typescript',
+  'systemjs.public.prod'
+], function () {
 
   var stream = gulp.src(path.join(config.Public.src, './main.js'))
     .pipe(gulp_jspm())
@@ -72,15 +82,22 @@ gulp.task('index.public.prod', function () {
     .pipe(gulp.dest(config.Public.build));
 });
 
-gulp.task('inject.public.prod', ['index.public.prod', 'jsmin.public.prod', 'css.public.prod', 'jspm.public.prod'], function () {
+gulp.task('inject.public.prod', ['index.public.prod', 'jsmin.public.prod',
+  'css.public.prod', 'jspm.public.prod'
+], function () {
   var target = gulp.src(path.join(config.Public.build, './index.html'));
 
-  var sources = gulp.src([path.join(config.Public.build, './js/lib/system.js'),
+  var sources = gulp.src([path.join(config.Public.build,
+      './js/lib/system.js'),
     path.join(config.Public.build, './js/**/*.js'),
-    path.join(config.Public.build, './css/**/*.css')],
-    { read: false });
+    path.join(config.Public.build, './css/**/*.css')
+  ], {
+    read: false
+  });
 
-  var stream = target.pipe(inject(sources, { relative: true }))
+  var stream = target.pipe(inject(sources, {
+      relative: true
+    }))
     .pipe(gulp.dest(config.Public.build))
 
   return stream;
@@ -101,17 +118,22 @@ gulp.task('images.public.prod', function () {
 gulp.task('jsmin.public.prod', function () {
   gulp.src(path.join(config.Public.src, 'js/**/*.js'))
     .pipe(jsmin())
-    .pipe(rename({ suffix: '.min' }))
+    .pipe(rename({
+      suffix: '.min'
+    }))
     .pipe(gulp.dest(path.join(config.Public.build, '/js')));
 });
 
 gulp.task('clean.public.prod', function () {
-  del.sync('./public', { force: true });
+  del.sync('./public', {
+    force: true
+  });
 });
 
 gulp.task('move-components.public.prod',
   function () {
-    gulp.src([path.join(config.Public.src, './components/**/*.html'), path.join(config.Public.src, '!./components/**/*.ts')])
+    gulp.src([path.join(config.Public.src, './components/**/*.html'), path.join(
+        config.Public.src, '!./components/**/*.ts')])
       .pipe(gulp.dest(path.join(config.Public.build, './components')));
     gulp.src((path.join(config.Public.src, './templates/**/*.html')))
       .pipe(gulp.dest(path.join(config.Public.build, './templates')));
@@ -124,7 +146,8 @@ gulp.task('build.public.prod', ['clean.public.prod',
   'jsmin.public.prod',
   'images.public.prod',
   'inject.public.prod',
-  'move-components.public.prod']);
+  'move-components.public.prod'
+]);
 
 // development tasks
 
@@ -142,23 +165,41 @@ gulp.task('jspm.public.dev', ['compile.public.typescript'], function () {
 gulp.task('inject.public.dev', ['jspm.public.dev'], function () {
   var target = gulp.src(path.join(config.Public.src, './index.html'));
 
-  var sources = gulp.src([path.join(config.Public.src, './jspm_packages/system.js'),
+  var sources = gulp.src([path.join(config.Public.src,
+      './jspm_packages/system.js'),
     path.join(config.Public.src, './jspm-bundle.js'),
     path.join(config.Public.src, './js/**/*.js'),
-    path.join(config.Public.src, './css/**/*.css')],
-    { read: false });
+    path.join(config.Public.src, './css/**/*.css')
+  ], {
+    read: false
+  });
 
-  var stream = target.pipe(inject(sources, {relative: true}))
+  var stream = target.pipe(inject(sources, {
+      relative: true
+    }))
     .pipe(gulp.dest(config.Public.src))
 
   return stream;
 });
 
-gulp.task('build.public.dev', ['compile.public.typescript', 'jspm.public.dev', 'inject.public.dev']);
+gulp.task('build.public.dev', ['compile.public.typescript', 'jspm.public.dev',
+  'inject.public.dev'
+]);
 
 gulp.task('watch.public.dev', ['build.public.dev'], function () {
   liveServer.start(params);
-  gulp.watch([path.join(config.Public.src, './**/*.ts'), path.join(config.Public.src, './templates/**/*.html'), path.join(config.Public.src, './components/**/*.html')], ['build.public.dev'])
+  gulp.watch([path.join(config.Public.src, './**/*.ts'), path.join(config.Public
+    .src, './templates/**/*.html'), path.join(config.Public.src,
+    './components/**/*.html')], ['build.public.dev'])
+});
+
+gulp.task('watch.public.prod', ['build.public.prod'], function () {
+  gulp.watch([path.join(config.Public.src, './**/*.ts'), path.join(config.Public
+    .src, './templates/**/*.html'), path.join(config.Public.src,
+    './components/**/*.html')], ['build.public.prod'])
+    
+    console.log('watching changes in source')
 });
 
 // end development tasks
+
