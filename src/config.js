@@ -19,6 +19,7 @@ System.config({
     "babel-runtime": "npm:babel-runtime@5.8.25",
     "core-js": "npm:core-js@1.2.0",
     "crypto": "github:jspm/nodelibs-crypto@0.1.0",
+    "d3": "github:mbostock/d3@3.5.6",
     "es6-shim": "github:es-shims/es6-shim@0.33.3",
     "normalize.css": "github:necolas/normalize.css@3.0.3",
     "reflect-metadata": "npm:reflect-metadata@0.1.2",
