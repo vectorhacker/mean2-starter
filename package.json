@@ -19,6 +19,7 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/transporte-urbano/bus-tracking#readme",
   "dependencies": {
+    "async": "^1.4.2",
     "body-parser": "^1.14.1",
     "compression": "^1.6.0",
     "csurf": "^1.8.3",
