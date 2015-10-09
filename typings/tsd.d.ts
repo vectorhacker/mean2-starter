@@ -11,3 +11,4 @@
 /// <reference path="morgan/morgan.d.ts" />
 /// <reference path="socket.io/socket.io.d.ts" />
 /// <reference path="session-rethinkdb/session-rethinkdb.d.ts" />
+/// <reference path="d3/d3.d.ts" />

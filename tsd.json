@@ -37,6 +37,9 @@
     },
     "socket.io/socket.io.d.ts": {
       "commit": "a6732bf1c03fd285bb01641b3a5a0129147cdb5b"
+    },
+    "d3/d3.d.ts": {
+      "commit": "3fc1377ce29dd9670975cb68615edf1b819fc4a5"
     }
   }
 }
