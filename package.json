@@ -5,9 +5,9 @@
   "main": "bin/server",
   "scripts": {
     "postinstall": "node node_modules/jspm/jspm.js install",
-    "prebuild": "/Users/vectorhacker/Projects/AMA/tu-tracking/BusTracking/node_modules/typescript/bin/tsc",
-    "build": "/Users/vectorhacker/Projects/AMA/tu-tracking/BusTracking/node_modules/gulp/bin/gulp.js",
-    "watch": "/Users/vectorhacker/Projects/AMA/tu-tracking/BusTracking/node_modules/gulp/bin/gulp.js watch.public.prod",
+    "prebuild": "node_modules/typescript/bin/tsc",
+    "build": "node_modules/gulp/bin/gulp.js",
+    "watch": "node_modules/gulp/bin/gulp.js watch.public.prod",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./bin/server.js"
   },
