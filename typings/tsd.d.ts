@@ -13,3 +13,4 @@
 /// <reference path="session-rethinkdb/session-rethinkdb.d.ts" />
 /// <reference path="d3/d3.d.ts" />
 /// <reference path="node_zeromq/zmq.d.ts" />
+/// <reference path="googlemaps/google.maps.d.ts" />
