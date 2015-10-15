@@ -21,7 +21,6 @@ import { Home } from './components/Home/Home';
 	{ path: '/about/:page', component: About, as: 'about' }
 ])
 class Starter {
-
 }
 
 bootstrap(Starter, [HTTP_BINDINGS, ROUTER_BINDINGS, bind(LocationStrategy)
