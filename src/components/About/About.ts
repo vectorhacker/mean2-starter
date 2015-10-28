@@ -1,12 +1,12 @@
-import {Component, View, bootstrap, bind, NgIf} from 'angular2/angular2';
+
+import {Component, NgIf} from 'angular2/angular2';
 import {RouteParams} from 'angular2/router';
+import {ROUTER_DIRECTIVES} from 'angular2/router';
 
 @Component({
-	selector: 'none'
-})
-@View({
+	selector:'about',
 	templateUrl: './components/About/About.html',
-	directives: [NgIf]
+	directives: [NgIf, ROUTER_DIRECTIVES]
 })
 export class About {
 	page:string;

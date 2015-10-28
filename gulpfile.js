@@ -19,7 +19,7 @@ var params = {
   host: "0.0.0.0", // Set the address to bind to. Defaults to 0.0.0.0. 
   root: config.Public.src, // Set root directory that's being server. Defaults to cwd. 
   open: true, // When false, it won't load your browser by default. 
-  ignore: './**/*.ts', // comma-separated string for paths to ignore 
+  //ignore: './**/*.ts', // comma-separated string for paths to ignore 
   file: "index.html", // When set, serve this file for every 404 (useful for single-page applications) 
   wait: 0 // Waits for all changes, before reloading. Defaults to 0 sec. 
 };
@@ -57,7 +57,7 @@ gulp.task('compile.public.typescript', function () {
 });
 
 gulp.task('systemjs.public.prod', function () {
-  gulp.src(path.join(config.Public.src, './jspm_packages/system.js'))
+  gulp.src([path.join(config.Public.src, './jspm_packages/system.js'), path.join(config.Public.src, './jspm_packages/system.js.map')])
     .pipe(gulp.dest(path.join(config.Public.build, './js/lib')))
 });
 

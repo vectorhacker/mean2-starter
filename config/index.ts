@@ -7,8 +7,8 @@ export class Public {
 
 export class rethinkdb {
 		static PRODUCTION = {
-		host: 'localhost',
-		port: 28015
+		host: process.env.RETHINKDB_HOST || 'localhost',
+		port: process.env.RETHINKDB_PORT || 28015
 		}
 
 		static DEVELOPMENT = {
