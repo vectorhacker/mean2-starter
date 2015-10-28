@@ -1,12 +1,13 @@
 /// <reference path="typings/tsd.d.ts" />
-import 'reflect-metadata';
+import 'zone.js'
+import 'reflect-metadata'
 
-import {Component, View, bootstrap, provide} from 'angular2/angular2';
-import {ROUTER_DIRECTIVES, RouteConfig, Location, ROUTER_PROVIDERS, LocationStrategy, HashLocationStrategy, Route, AsyncRoute, Router} from 'angular2/router';
+import {Component, View, bootstrap, provide} from 'angular2/angular2'
+import {ROUTER_DIRECTIVES, RouteConfig, Location, ROUTER_PROVIDERS, LocationStrategy, HashLocationStrategy, Route, AsyncRoute, Router} from 'angular2/router'
 import {HTTP_PROVIDERS} from 'angular2/http'
 
-import { About } from './components/About/About';
-import { Home } from './components/Home/Home';
+import { About } from './components/About/About'
+import { Home } from './components/Home/Home'
 
 declare var System: any;
 

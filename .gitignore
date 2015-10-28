@@ -1,6 +1,6 @@
 node_modules
-src/node_modules
-src/jspm_packages
+./src/node_modules
+./src/jspm_packages
 **/*.js
 **/*.js.map
 !js/*.js

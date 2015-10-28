@@ -40,7 +40,7 @@ gulp.task('run.server.dev', ['compile.server.typescript'], function () {
 gulp.task('compile.server.typescript', function () {
   var tsProject = ts.createProject('tsconfig.json');
   var tsResult = tsProject.src() // instead of gulp.src(...) 
-    .pipe(ts(tsProject));
+    .pipe(ts(tsProject))
 
   var stream = tsResult.js.pipe(gulp.dest('./'));
   return stream;
@@ -50,9 +50,10 @@ gulp.task('compile.public.typescript', function () {
   var tsProject = ts.createProject(path.join(config.Public.src,
     'tsconfig.json'));
   var tsResult = tsProject.src() // instead of gulp.src(...) 
+    .pipe(sourcemaps.init())
     .pipe(ts(tsProject));
 
-  var stream = tsResult.js.pipe(gulp.dest(config.Public.src));
+  var stream = tsResult.js.pipe(sourcemaps.write(config.Public.src)).pipe(gulp.dest(config.Public.src));
   return stream;
 });
 
