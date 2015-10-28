@@ -1,7 +1,13 @@
 System.config({
   baseURL: "/",
   defaultJSExtensions: true,
-  transpiler: "typescript",
+  transpiler: "babel",
+  babelOptions: {
+    "optional": [
+      "runtime",
+      "optimisation.modules.system"
+    ]
+  },
   paths: {
     "npm:*": "jspm_packages/npm/*",
     "github:*": "jspm_packages/github/*"
@@ -9,6 +15,9 @@ System.config({
 
   map: {
     "angular2": "npm:angular2@2.0.0-alpha.44",
+    "babel": "npm:babel-core@5.8.30",
+    "babel-runtime": "npm:babel-runtime@5.8.29",
+    "core-js": "npm:core-js@1.2.3",
     "crypto": "github:jspm/nodelibs-crypto@0.1.0",
     "d3": "github:mbostock/d3@3.5.6",
     "es6-shim": "github:es-shims/es6-shim@0.33.8",
@@ -85,6 +94,9 @@ System.config({
     },
     "npm:assert@1.3.0": {
       "util": "npm:util@0.10.3"
+    },
+    "npm:babel-runtime@5.8.29": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:browserify-aes@1.0.5": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",

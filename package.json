@@ -4,7 +4,7 @@
   "description": "",
   "main": "bin/server",
   "scripts": {
-    "postinstall": "node ./node node_modules/jspm/jspm.js install",
+    "postinstall": "node node_modules/jspm/jspm.js install",
     "prebuild": "node ./node_modules/typescript/bin/tsc",
     "build": "node ./node_modules/gulp/bin/gulp.js",
     "watch": "node ./node_modules/gulp/bin/gulp.js watch.public.prod",
@@ -43,7 +43,7 @@
     "gulp-node-inspector": "^0.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-sourcemaps": "^1.5.2",
-    "gulp-typescript": "^2.9.0",
+    "gulp-typescript": "^2.9.2",
     "jspm": "^0.16.13",
     "live-server": "^0.8.1",
     "typescript": "^1.6.2"
@@ -63,6 +63,9 @@
       "zone.js": "npm:zone.js@^0.5.8"
     },
     "devDependencies": {
+      "babel": "npm:babel-core@^5.8.24",
+      "babel-runtime": "npm:babel-runtime@^5.8.24",
+      "core-js": "npm:core-js@^1.1.4",
       "typescript": "npm:typescript@^1.6.2"
     }
   }
