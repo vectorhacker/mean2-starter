@@ -14,4 +14,8 @@ if (process.env.DEVELOPMENT) {
   app.use(express.static(config.Public.build))
 }
 
+app.get('/s', (req, res) => {
+  res.send('hello');
+})
+
 app.listen(8081)

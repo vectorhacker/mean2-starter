@@ -4,7 +4,8 @@
 		"experimentalDecorators": true,
 		"module": "commonjs",
 		"target": "ES5",
-		"sourceMap": true
+		"sourceMap": true,
+		"inlineSourceMap": true
 	},
 	"files": [
 		"./typings/tsd.d.ts",
