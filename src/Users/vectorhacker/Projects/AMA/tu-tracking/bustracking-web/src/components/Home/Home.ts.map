@@ -1,1 +1,0 @@
-{"version":3,"names":[],"mappings":"","sources":["components/Home/Home.ts"],"sourcesContent":["import {Component} from 'angular2/angular2';\n\n@Component({\n\tselector: 'home',\n\ttemplate: 'Home'\n})\nexport class Home {\n\tconstructor() {\n\t\t\n\t}\n}"],"file":"components/Home/Home.ts","sourceRoot":"/source/"}
