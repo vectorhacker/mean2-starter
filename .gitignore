@@ -1,10 +1,7 @@
 node_modules
 src/node_modules
 src/jspm_packages
-<<<<<<< HEAD
-=======
 public
->>>>>>> 4156eff120b63453edc72cbeaf779db7398bc53a
 **/*.js
 **/*.js.map
 !js/*.js
