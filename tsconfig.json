@@ -1,0 +1,15 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"sourceMap": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"target": "ES5"
+	},
+	"files": [
+		"typings/tsd.d.ts",
+		"app.ts",
+		"./bin/server.ts",
+		"./config/index.ts"
+	]
+}
