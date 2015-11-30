@@ -1,62 +1,34 @@
 {
-  "name": "mean2",
+  "name": "bus-tracking",
   "version": "0.0.1",
   "description": "",
-  "main": "bin/server",
+  "main": "src/server",
   "scripts": {
-    "postinstall": "node node_modules/jspm/jspm.js install",
-    "prebuild": "node ./node_modules/typescript/bin/tsc",
-    "build": "node ./node_modules/gulp/bin/gulp.js",
-    "watch": "node ./node_modules/gulp/bin/gulp.js watch.public.prod",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prestart": "npm run build",
-    "start": "node ./bin/server.js"
+    "postinstall": "cd src && npm i && cd public && npm i",
+    "build": "gulp prod.build"
   },
-  "author": "Victor A. Martinez <martinezsantiagovictor@outlook.com>",
-  "license": "MIT",
-  "dependencies": {
-    "body-parser": "^1.14.1",
-    "compression": "^1.6.0",
-    "csurf": "^1.8.3",
-    "express": "^4.13.3",
-    "express-session": "^1.11.3",
-    "morgan": "^1.6.1",
+  "engines": {
+    "node": "~4.2.2",
+    "npm": "3.4.1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/transporte-urbano/bus-tracking.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/transporte-urbano/bus-tracking#readme",
   "devDependencies": {
     "delete": "^0.2.1",
     "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
     "gulp-concat-css": "^2.2.0",
     "gulp-imagemin": "^2.3.0",
     "gulp-inject": "^3.0.0",
     "gulp-jsmin": "^0.1.5",
-    "gulp-jspm": "^0.5.4",
-    "gulp-node-inspector": "^0.1.0",
-    "gulp-rename": "^1.2.2",
     "gulp-sourcemaps": "^1.5.2",
+    "gulp-stylus": "^2.1.0",
     "gulp-typescript": "^2.9.2",
-    "jspm": "^0.16.13",
-    "live-server": "^0.8.1",
-    "typescript": "^1.6.2"
-  },
-  "jspm": {
-    "directories": {
-      "baseURL": "src"
-    },
-    "dependencies": {
-      "angular2": "npm:angular2@2.0.0-alpha.44",
-      "crypto": "github:jspm/nodelibs-crypto@^0.1.0",
-      "d3": "github:mbostock/d3@^3.5.6",
-      "es6-shim": "github:es-shims/es6-shim@^0.33.3",
-      "flux": "npm:flux@^2.1.1",
-      "normalize.css": "github:necolas/normalize.css@^3.0.3",
-      "reflect-metadata": "npm:reflect-metadata@^0.1.2",
-      "zone.js": "npm:zone.js@^0.5.8"
-    },
-    "devDependencies": {
-      "babel": "npm:babel-core@^5.8.24",
-      "babel-runtime": "npm:babel-runtime@^5.8.24",
-      "core-js": "npm:core-js@^1.1.4",
-      "typescript": "npm:typescript@^1.6.2"
-    }
+    "gulp-uglify": "^1.5.1"
   }
 }

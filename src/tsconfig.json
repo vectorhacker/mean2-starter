@@ -1,16 +1,17 @@
 {
 	"compilerOptions": {
+		"module": "commonjs",
+		"sourceMap": true,
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
-		"module": "commonjs",
-		"target": "ES5",
-		"sourceMap": true,
-		"inlineSourceMap": true
+		"target": "ES5"
 	},
-	"files": [
-		"./typings/tsd.d.ts",
-		"./main.ts",
-		"./components/About/About.ts",
-		"./components/Home/Home.ts"
+	"exclude": [
+		"node_modules",
+		"src/jspm_packages",
+		"public",
+		"typings",
+		"src/typings",
+		"src"
 	]
 }

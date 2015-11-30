@@ -1,0 +1,32 @@
+<html>
+
+<head>
+	<!-- inject:css -->
+	<!-- endinject -->
+	<title></title>
+</head>
+
+<body>
+	<starter>Loading...</starter>
+	
+	<!-- Socket IO Import -->
+	<script src="//cdn.socket.io/socket.io-1.2.0.js" async></script>
+	<script src="//maps.googleapis.com/maps/api/js?key=AIzaSyBD7_eW7or99ZlsTwGKapBmQMOq4Vxj4qg" async></script>
+
+	<!-- inject:js -->
+	<script src="node_modules/systemjs/dist/system.src.js"></script>
+	<script src="node_modules/es6-shim/es6-shim.js"></script>
+	<script src="node_modules/angular2/bundles/angular2.dev.js"></script>
+	<script src="node_modules/angular2/bundles/http.dev.js"></script>
+	<script src="node_modules/angular2/bundles/router.dev.js"></script>
+	<!-- endinject -->
+	<script>
+		System.config({
+        packages: {'app': {defaultExtension: 'js'}}
+      });
+			
+		System.import('app/main');
+	</script>
+</body>
+
+</html>

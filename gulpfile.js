@@ -1,207 +1,193 @@
 var gulp = require('gulp')
-var gulp_jspm = require('gulp-jspm');
-var sourcemaps = require('gulp-sourcemaps');
-var ts = require('gulp-typescript');
-var inject = require('gulp-inject');
-var liveServer = require('live-server');
-var jsmin = require('gulp-jsmin');
-var rename = require('gulp-rename');
-var imagemin = require('gulp-imagemin');
-var concatCss = require('gulp-concat-css');
-var del = require('delete');
-var path = require('path');
-var nodeInspector = require('gulp-node-inspector');
+var ts = require('gulp-typescript')
+var sourcemaps = require('gulp-sourcemaps')
+var stylus = require('gulp-stylus')
+var concat = require('gulp-concat')
+var inject = require('gulp-inject')
+var del = require('delete')
+var path = require('path')
+var uglify = require('gulp-uglify')
+var exec = require('child_process').exec
 
-var config = require('./config');
+var serverTS = ts.createProject('./src/tsconfig.json')
+var publicTS = ts.createProject('./src/public/tsconfig.json')
 
-var params = {
-  port: 8181, // Set the server port. Defaults to 8080. 
-  host: "0.0.0.0", // Set the address to bind to. Defaults to 0.0.0.0. 
-  root: config.Public.src, // Set root directory that's being server. Defaults to cwd. 
-  open: true, // When false, it won't load your browser by default. 
-  //ignore: './**/*.ts', // comma-separated string for paths to ignore 
-  file: "index.html", // When set, serve this file for every 404 (useful for single-page applications) 
-  wait: 0 // Waits for all changes, before reloading. Defaults to 0 sec. 
-};
+// <script src="node_modules/systemjs/dist/system.src.js"></script>
+// <script src="node_modules/es6-shim/es6-shim.js"></script>
+// <script src="node_modules/angular2/bundles/angular2.dev.js"></script>
+// <script src="node_modules/angular2/bundles/http.dev.js"></script>
+// <script src="node_modules/angular2/bundles/router.dev.js"></script>
 
-gulp.task('default', ['compile.server.typescript', 'build.public.prod'],
-  function () {
+var developmentJSLibs = ['./src/public/node_modules/systemjs/dist/system.src.js',
+	'./src/public/node_modules/es6-shim/es6-shim.js',
+	'./src/public/node_modules/angular2/bundles/angular2.dev.js',
+  './src/public/node_modules/angular2/bundles/http.dev.js',
+	'./src/public/node_modules/angular2/bundles/router.dev.js']
 
-  });
+var productionJSLibs = ['./src/public/node_modules/systemjs/dist/system.js',
+	'./src/public/node_modules/es6-shim/es6-shim.min.js',
+	'./src/public/node_modules/angular2/bundles/angular2.min.js',
+  './src/public/node_modules/angular2/bundles/http.min.js',
+	'./src/public/node_modules/angular2/bundles/router.dev.min.js']
 
-gulp.task('run.server.dev', ['compile.server.typescript'], function () {
-  gulp.src([])
-    .pipe(nodeInspector({
-      debugPort: 5858,
-      webPort: 3000,
-    }));
-});
+gulp.task('install.public.deps', function (done) {
+	 exec('cd src/public && npm i', function (err, stdout, stderr) {
 
-gulp.task('compile.server.typescript', function () {
-  var tsProject = ts.createProject('tsconfig.json');
-  var tsResult = tsProject.src() // instead of gulp.src(...) 
-    .pipe(ts(tsProject))
+		console.log('NPM:', stdout)
+		console.error('NPM ERROR:', stderr)
 
-  var stream = tsResult.js.pipe(gulp.dest('./'));
-  return stream;
+    if (err) return done(err); // return error
+    done(); // finished task
+	 })
 })
 
-gulp.task('compile.public.typescript', function () {
-  var tsProject = ts.createProject(path.join(config.Public.src,
-    'tsconfig.json'));
-  var tsResult = tsProject.src() // instead of gulp.src(...)
-    .pipe(sourcemaps.init()) 
-    .pipe(ts(tsProject));
-
-  var stream = tsResult.js
-    .pipe(sourcemaps.write(config.Public.src))
-    .pipe(gulp.dest(config.Public.src));
-    
-  return stream;
-});
-
-gulp.task('systemjs.public.prod', function () {
-  gulp.src([path.join(config.Public.src, './jspm_packages/system.js'), path.join(config.Public.src, './jspm_packages/system.js.map')])
-    .pipe(gulp.dest(path.join(config.Public.build, './js/lib')))
-});
-
-gulp.task('jspm.public.prod', ['compile.public.typescript',
-  'systemjs.public.prod'
-], function () {
-
-  var stream = gulp.src(path.join(config.Public.src, './main.js'))
-    .pipe(gulp_jspm())
-    .pipe(jsmin())
-    .pipe(rename({
-      basename: 'app',
-      suffix: '.min'
-    }))
-    .pipe(gulp.dest(path.join(config.Public.build, './js/')));
-  return stream;
-});
-
-// production tasks
-gulp.task('index.public.prod', function () {
-  gulp.src(path.join(config.Public.src, './index.html'))
-    .pipe(gulp.dest(config.Public.build));
-});
-
-gulp.task('inject.public.prod', ['index.public.prod', 'jsmin.public.prod',
-  'css.public.prod', 'jspm.public.prod'
-], function () {
-  var target = gulp.src(path.join(config.Public.build, './index.html'));
-
-  var sources = gulp.src([path.join(config.Public.build,
-      './js/lib/system.js'),
-    path.join(config.Public.build, './js/**/*.js'),
-    path.join(config.Public.build, './css/**/*.css')
-  ], {
-    read: false
-  });
-
-  var stream = target.pipe(inject(sources, {
-      relative: true
-    }))
-    .pipe(gulp.dest(config.Public.build))
-
-  return stream;
-});
-
-gulp.task('css.public.prod', function () {
-  return gulp.src(path.join(config.Public.src, './css/**/*.css'))
-    .pipe(concatCss("css/app.css"))
-    .pipe(gulp.dest(config.Public.build));
+gulp.task('clean', function (done) {
+	function deleteNodeModulesGlobal(err) {
+		if (err) return done(err)
+		
+		del('./src/public/node_modules', deleteNodeModulesPublic)
+	}
+	
+	function deleteNodeModulesPublic(err) {
+		if (err) return done(err)
+		
+		del('./src/**/*.js', deleteJS)
+	}
+	
+	function deleteJS(err) {
+		if (err) return done(err)
+		
+		del('./src/**/*.js.map', done)
+	}
+	
+	del('./src/node_modules', deleteNodeModulesGlobal)
 })
 
-gulp.task('images.public.prod', function () {
-  return gulp.src(path.join(config.Public.src, 'images/*'))
-    .pipe(imagemin())
-    .pipe(gulp.dest(path.join(config.Public.build, 'images')));
+// DEVELOPMENT
+gulp.task('dev.ts.public', function () {
+	return publicTS.src()
+		.pipe(sourcemaps.init())
+		.pipe(ts(publicTS))
+		.js
+		.pipe(sourcemaps.write())
+		.pipe(gulp.dest('./src/public'))
 })
 
-gulp.task('jsmin.public.prod', function () {
-  gulp.src(path.join(config.Public.src, 'js/**/*.js'))
-    .pipe(jsmin())
-    .pipe(rename({
-      suffix: '.min'
-    }))
-    .pipe(gulp.dest(path.join(config.Public.build, '/js')));
-});
+gulp.task('dev.ts.server', function () {
+	return serverTS.src()
+		.pipe(sourcemaps.init())
+		.pipe(ts(serverTS))
+		.js
+		.pipe(sourcemaps.write('.', { includeContent: false, sourceRoot: path.join(__dirname, './src') }))
+		.pipe(gulp.dest('./src'))
+})
 
-gulp.task('clean.public.prod', function () {
-  del.sync('./public', {
+gulp.task('dev.ts', ['dev.ts.server', 'dev.ts.public'])
+
+gulp.task('dev.stylus', function () {
+	return gulp.src('./src/public/css/**/*.styl')
+		.pipe(sourcemaps.init())
+		.pipe(stylus())
+		.pipe(sourcemaps.write())
+		.pipe(gulp.dest('./src/public/css/'))
+})
+
+gulp.task('dev.inject', ['install.public.deps'], function () {
+	var target = gulp.src('./src/public/index.html')
+	var sources = gulp.src(['./src/public/js/**/*.js', './src/public/lib/**/*.js', './src/public/**/*.css', '!./src/public/node_modules/**/*.css'].concat(developmentJSLibs), { read: false })
+
+	return target.pipe(inject(sources, { relative: true }))
+    .pipe(gulp.dest('./src/public'));
+})
+
+gulp.task('dev.build', ['dev.ts', 'dev.stylus', 'dev.inject'])
+
+gulp.task('dev.watch', ['dev.build'], function () {
+	// watch and recompile server typescript
+	gulp.watch(['./src/**/*.ts', '.!./src/public/**/*.ts', '!./src/typings/**/*.ts'], ['dev.ts.server'])
+	
+	// watch and recompile public typescript
+	gulp.watch(['./src/public/**/*.ts', '!./src/public/typings/**/*.ts'], ['dev.ts.public'])
+	
+	
+	// watch and recompile stylus to css, then inject
+	gulp.watch(['./src/public/css/**/*.styl'], ['dev.stylus', 'dev.inject'])
+	
+	// inject any new javascript
+	gulp.watch(['./src/public/js/**/*.js'], ['dev.inject'])
+})
+
+// PRODUCTION
+gulp.task('prod.ts', function () {
+	serverTS.src()
+		.pipe(ts(serverTS))
+		.js
+		.pipe(gulp.dest('./dist'))
+
+
+	publicTS.src()
+		.pipe(ts(publicTS))
+		.js
+		.pipe(gulp.dest('./dist/public'))
+})
+
+gulp.task('prod.stylus', function () {
+	return gulp.src('./src/css/**/*.styl')
+		.pipe(stylus())
+		.pipe(concat('app.css'))
+		.pipe(gulp.dest('./dist/css/'))
+})
+
+gulp.task('cp.index.html', function () {
+	return gulp.src('./src/public/index.html')
+		.pipe(gulp.dest('./dist/public'))
+})
+
+
+gulp.task('prod.inject', ['cp.index.html', 'prod.cp.js', 'prod.stylus'], function () {
+	var target = gulp.src('./dist/public/index.html')
+	var sources = gulp.src(['./dist/public/js/system.js', './dist/public/js/**/*.js', './dist/public/**/*.css'], { read: false })
+
+	return target.pipe(inject(sources, { relative: true }))
+    .pipe(gulp.dest('./dist/public'))
+})
+
+gulp.task('prod.cp.pkgjson', function () {
+	return gulp.src('./src/package.json')
+		.pipe(gulp.dest('./dist'))
+})
+
+
+gulp.task('prod.cp.js', ['install.public.deps'], function () {
+	return gulp.src(['./src/public/js/**/*.js'].concat(productionJSLibs))
+	  .pipe(concat('lib/deps.js'))
+		.pipe(gulp.dest('./dist/public/js'))
+})
+
+gulp.task('prod.cp.images', function () {
+	return gulp.src('./src/public/images/**/*')
+		.pipe(gulp.dest('./dist/public/images'))
+})
+
+gulp.task('prod.cp.templates', function () {
+	return gulp.src('./src/public/app/**/*.html')
+		.pipe(gulp.dest('./dist/public/app'))
+})
+
+gulp.task('prod.clean', function () {
+	del.sync('./dist', {
     force: true
   });
-});
+})
 
-gulp.task('move-components.public.prod',
-  function () {
-    gulp.src([path.join(config.Public.src, './components/**/*.html'), path.join(
-        config.Public.src, '!./components/**/*.ts')])
-      .pipe(gulp.dest(path.join(config.Public.build, './components')));
-    gulp.src((path.join(config.Public.src, './templates/**/*.html')))
-      .pipe(gulp.dest(path.join(config.Public.build, './templates')));
-  });
+gulp.task('prod.minify.js', function () {
+	 return gulp.src(['./dist/public/**/*.js'])
+    .pipe(uglify({
+			mangle: false
+		}))
+    .pipe(gulp.dest('./dist/public'));
+})
 
-gulp.task('build.public.prod', ['clean.public.prod',
-  'index.public.prod',
-  'compile.public.typescript',
-  'jspm.public.prod',
-  'jsmin.public.prod',
-  'images.public.prod',
-  'inject.public.prod',
-  'move-components.public.prod'
-]);
+gulp.task('prod.build', ['install.public.deps', 'prod.clean', 'prod.stylus', 'cp.index.html', 'prod.cp.js', 'prod.inject', 'prod.ts', 'prod.cp.pkgjson', 'prod.cp.templates', 'prod.cp.images', 'prod.minify.js'])
 
-// development tasks
-
-gulp.task('jspm.public.dev', ['compile.public.typescript'], function () {
-
-  var stream = gulp.src(path.join(config.Public.src, 'main.js'))
-    .pipe(gulp_jspm())
-    .pipe(gulp.dest(config.Public.src));
-
-  return stream;
-});
-
-gulp.task('inject.public.dev', ['jspm.public.dev'], function () {
-  var target = gulp.src(path.join(config.Public.src, './index.html'));
-
-  var sources = gulp.src([path.join(config.Public.src,
-      './jspm_packages/system.js'),
-    path.join(config.Public.src, './jspm-bundle.js'),
-    path.join(config.Public.src, './js/**/*.js'),
-    path.join(config.Public.src, './css/**/*.css')
-  ], {
-    read: false
-  });
-
-  var stream = target.pipe(inject(sources, {
-      relative: true
-    }))
-    .pipe(gulp.dest(config.Public.src))
-
-  return stream;
-});
-
-gulp.task('build.public.dev', ['compile.public.typescript', 'jspm.public.dev',
-  'inject.public.dev'
-]);
-
-gulp.task('watch.public.dev', ['build.public.dev'], function () {
-  liveServer.start(params);
-  gulp.watch([path.join(config.Public.src, './**/*.ts'), path.join(config.Public
-    .src, './templates/**/*.html'), path.join(config.Public.src,
-    './components/**/*.html')], ['build.public.dev'])
-});
-
-gulp.task('watch.public.prod', ['build.public.prod'], function () {
-  gulp.watch([path.join(config.Public.src, './**/*.ts'), path.join(config.Public
-    .src, './templates/**/*.html'), path.join(config.Public.src,
-    './components/**/*.html')], ['build.public.prod'])
-    
-    console.log('watching changes in source')
-});
-
-// end development tasks
-
+gulp.task('default', ['prod.build'])

@@ -5,20 +5,53 @@
   "path": "typings",
   "bundle": "typings/tsd.d.ts",
   "installed": {
-    "rx/rx.d.ts": {
-      "commit": "09e37435ffb2c56a6f908081194a74756f24f99d"
+    "rethinkdb/rethinkdb.d.ts": {
+      "commit": "70b40db9e027f20a51aff03ed35862ce02ad7fff"
     },
-    "rx/rx-lite.d.ts": {
-      "commit": "09e37435ffb2c56a6f908081194a74756f24f99d"
+    "mime/mime.d.ts": {
+      "commit": "a6732bf1c03fd285bb01641b3a5a0129147cdb5b"
     },
-    "jasmine/jasmine.d.ts": {
-      "commit": "09e37435ffb2c56a6f908081194a74756f24f99d"
+    "serve-static/serve-static.d.ts": {
+      "commit": "a6732bf1c03fd285bb01641b3a5a0129147cdb5b"
     },
-    "flux/flux.d.ts": {
+    "express/express.d.ts": {
+      "commit": "a6732bf1c03fd285bb01641b3a5a0129147cdb5b"
+    },
+    "node/node.d.ts": {
+      "commit": "a6732bf1c03fd285bb01641b3a5a0129147cdb5b"
+    },
+    "compression/compression.d.ts": {
+      "commit": "a6732bf1c03fd285bb01641b3a5a0129147cdb5b"
+    },
+    "csurf/csurf.d.ts": {
+      "commit": "a6732bf1c03fd285bb01641b3a5a0129147cdb5b"
+    },
+    "express-session/express-session.d.ts": {
+      "commit": "a6732bf1c03fd285bb01641b3a5a0129147cdb5b"
+    },
+    "body-parser/body-parser.d.ts": {
+      "commit": "a6732bf1c03fd285bb01641b3a5a0129147cdb5b"
+    },
+    "morgan/morgan.d.ts": {
+      "commit": "a6732bf1c03fd285bb01641b3a5a0129147cdb5b"
+    },
+    "socket.io/socket.io.d.ts": {
+      "commit": "a6732bf1c03fd285bb01641b3a5a0129147cdb5b"
+    },
+    "d3/d3.d.ts": {
+      "commit": "3fc1377ce29dd9670975cb68615edf1b819fc4a5"
+    },
+    "node_zeromq/zmq.d.ts": {
+      "commit": "3a6e1b8988eba0ba74fe4db20c950242552857e2"
+    },
+    "es6-shim/es6-shim.d.ts": {
       "commit": "62eedc3121a5e28c50473d2e4a9cefbcb9c3957f"
     },
-    "googlemaps/google.maps.d.ts": {
-      "commit": "3a6e1b8988eba0ba74fe4db20c950242552857e2"
+    "jasmine/jasmine.d.ts": {
+      "commit": "62eedc3121a5e28c50473d2e4a9cefbcb9c3957f"
+    },
+    "bluebird/bluebird.d.ts": {
+      "commit": "16134c168d021351acb1673ee9659644fc58c424"
     }
   }
 }
